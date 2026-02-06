@@ -1,0 +1,33 @@
+this will be like a notes thingy cause there is a ton of shit going on in here
+
+first it appears this will adopt a kind of loop that keeps going until an update
+results in no changes
+
+the whole thinking will be about what happens in an iteration
+
+get_*_type will be supa gay eventually cause i may have lots of files an shi..
+
+right now the checking for whether 2 types get turned into a function call
+is done via a blacklist thingus, whereas it should actually be a whitelist
+which will allow for definitions of shit like operpointeraddpointer()
+
+im thinking about representing types as the number of pointers to
+a basetype as in **int == *int[] == int[][] == (2, int) cause in
+the end this will only matter for sending them to functions and i
+think it will be goofy as shit to define pointer multiplication in
+silly and unique ways
+
+{1, 2, 3, 4} * 3 / 2 -> {1, 2, 3, 4, 1, 2} type shit in c would be
+hella goofy
+
+"fuck is the cpu even doing atp???"
+
+should i consider int* the same as say char*
+well shit idk, the plus and minus opers are already defined for pointers
+but im thinking multiplication and shit, well shit imma implement the easy
+way for now and we'll say what we can do
+
+PRESSING MATTERS:
+handling the field_expression's which is an oh shit baby type of deal
+the struct keyword is currently perfectly ignored by the code
+(it is more like it aribitrarily handles it rn)

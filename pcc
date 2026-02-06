@@ -1,0 +1,3 @@
+#!/bin/sh
+
+~/prok/tstest/bin/python ~/prok/tstest/main.py $@
