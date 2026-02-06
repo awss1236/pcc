@@ -1,7 +1,4 @@
-int fun(int x){
-  return x;
-}
-
 int main(){
-  return 0;
+  int x = 5, y;
+  x + y;
 }

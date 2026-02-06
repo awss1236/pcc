@@ -24,6 +24,10 @@ def get_oper_str(o):
 def get_declarator_pcount_name(decl):
     if decl.type == 'identifier':
         return 0, decl.text
+    if decl.type == 'field_identifier':
+        return 0, decl.text
+    if decl.type == 'type_identifier':
+        return 0, decl.text
     if decl.type == 'function_declarator':
         return 0, decl.child(0).text
     if decl.type == 'init_declarator':
@@ -176,12 +180,19 @@ def get_struct_def(name, root):
         """))
     col = decl.matches(root)
     for _, m in col:
-        print(m)
         decl = m['decl'][0]
-        print(decl)
         res = get_declarator_pcount_name(decl)
-        if res is not None:
-            print('--------------------', res)
+        if res is not None and res[1] == name:
+            return res[0], m['type'][0]
+
+def get_field_type(field, fields):
+    for f in fields.children[1:-1]:
+        basetype = f.child(0).text
+        for d in f.children[1::2]:
+            res = get_declarator_pcount_name(d)
+            if res is not None and res[1] == field:
+                return res[0], basetype
+    return None
 
 def get_expr_type(expr, root):
     if expr.type == 'identifier':
@@ -200,9 +211,9 @@ def get_expr_type(expr, root):
         return get_desc_type(expr.child(1))
     if expr.type == 'field_expression': # -> syntax arrow
         _, struct_type = get_expr_type(expr.child(0), root)
-        struct_def = get_struct_def(struct_type, root)
-        # find the definition of said structure somehow
-        # do the yammy jammy ig
+        _, struct_def = get_struct_def(struct_type, root)
+        fields = struct_def.child(2)
+        return get_field_type(expr.child(2).text, fields)
 
     if expr.type == 'number_literal':
         return 0, get_number_type(expr.text)
@@ -228,7 +239,7 @@ def sort_ops(col):
 
 def desugar_code(code):
     tree = parser.parse(bytes(code, "utf8"))
-    print(tree.root_node)
+    #print(tree.root_node)
     query = Query(clang,
     """
     (binary_expression left: (_) @left right: (_) @right) @expr
